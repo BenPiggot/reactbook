@@ -26,6 +26,8 @@
         }
       },
 
+      _preSearchData: null,
+
       _sort: function(e) {
         var column = e.target.cellIndex;
         var data = this.state.data.slice(0);
@@ -58,6 +60,35 @@
           edit: null,
           data: data
         })
+      },
+
+      _toggleSearch: function() {
+        if (this.state.search) {
+          this.setState({
+            data: this._preSearchData,
+            search: false
+          })
+        } else {
+          this._preSearchData = this.state.data
+          this.setState({
+            search: true
+          })
+        }
+      },
+
+      _search: function(e) {
+        var needle = e.target.value.toLowerCase();
+        if (!needle) {
+          this.setState({ data: this._preSearchData});
+          return
+        }
+
+        var idx = e.target.dataset.idx;
+        var searchData = this._preSearchData.filter(function(row) {
+          return row[idx].toString().toLowerCase().indexOf(needle) > -1
+        })
+
+        this.setState({ data: searchData })
       },
 
       _renderTable: function() {
@@ -106,10 +137,11 @@
       _renderToolbar: function() {
         return React.DOM.button(
           {
-            onClick: this._toggleToolbar,
-            className: 'toolbar'
+            onClick: this._toggleSearch,
+            className: 'toolbar',
           },
-        'search')
+          'search'
+        );
       },
 
       _renderSearch: function() {
@@ -132,12 +164,13 @@
 
       render: function() {
         return (
-          React.DOM.div(null, {
-            this._renderToolbar,
-            this._renderTable
-          })
-        )
+          React.DOM.div(null,
+            this._renderToolbar(),
+            this._renderTable()
+          )
+        );
       }
+    })
 
     var headers = [
       "Book", "Author", "Language", "Published", "Sales"
