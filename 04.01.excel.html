@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Excel Beta</title>
+  <title>Excel Beta</title>   
+  <meta charset="utf-8">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app">
-    
-  </div>
+  <div id="app"></div>
+
   <script src="react/build/react.js"></script>
   <script src="react/build/react-dom.js"></script>
   <script src="babel/browser.js"></script>
-
-  <script text="text/babel">
-    var Excel = React.createClass({
+  <script type="text/babel">
+        var Excel = React.createClass({
       displayName: 'Excel',
 
       getInitialState: function() {
@@ -108,25 +107,26 @@
       },
 
       _renderTable: function() {
+        var _this = this;
         return (
-          React.DOM.table(null,
-            React.DOM.thead({onClick: this._sort},
-              React.DOM.tr(null,
-                this.props.headers.map(function(title, idx) {
-                  if (this.state.sortby === idx) {
-                    title += this.state.descending ? ' \u2191' : ' \u2193'
+          <table>
+            <thead onClick={this._sort}>
+              <tr>
+                { this.props.headers.map( function(title, idx) {
+                  if (_this.state.sortby === idx) {
+                    title += _this.state.descending ? ' \u2191' : ' \u2193'
                   }
-                  return React.DOM.th({key: idx}, title);
-                }, this)
-              )
-            ),
+                  return <th key={idx}>{title}</th>
+                })}
+              </tr>
+            </thead>
 
-            React.DOM.tbody({onDoubleClick: this._showEditor},
-              this._renderSearch(),
-              this.state.data.map(function(row, rowidx) {
+           <tbody onDoubleClick={this._showEditor}>
+              { this._renderSearch() }
+              { this.state.data.map(function(row, rowidx) {
                 return (
-                  React.DOM.tr({key: rowidx},
-                    row.map(function(cell, idx) {
+                  <tr key={rowidx}>
+                    { row.map(function(cell, idx) {
                       var content = cell;
                       var edit = this.state.edit;
                       if (edit && edit.row === rowidx && edit.cell === idx) {
@@ -141,12 +141,12 @@
                         key: idx,
                         'data-row': rowidx,
                       }, content);
-                    }, this)
-                  )
+                    }, this) }
+                  </tr>
                 );
-              }, this)
-            )
-          )
+              }, this) }
+            </tbody>
+          </table>
         );
       },
 
@@ -190,10 +190,10 @@
 
       render: function() {
         return (
-          React.DOM.div(null,
-            this._renderToolbar(),
-            this._renderTable()
-          )
+          <div>
+            { this._renderToolbar() }
+            { this._renderTable() }
+          </div>
         );
       }
     })
@@ -219,6 +219,6 @@
       document.getElementById("app")
     )
   </script>
-
 </body>
 </html>
+
