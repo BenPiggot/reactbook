@@ -83,6 +83,7 @@
         }
 
         var idx = e.target.dataset.idx;
+        debugger
         var searchData = this._preSearchData.filter(function(row) {
           return row[idx].toString().toLowerCase().indexOf(needle) > -1
         })
@@ -134,7 +135,7 @@
                           <input type='text' defaultValue={cell} />
                         </form>
                       }
-                      return <td key={idx} dataRow={rowidx}>{content}</td>
+                      return <td key={idx} data-row={rowidx}>{content}</td>
                     }, this)}
                   </tr>
                 );
@@ -160,7 +161,7 @@
          <tr onChange={this._search}> 
             { this.props.headers.map( function( _ignore, idx) {
               return <td key={idx}>
-                <input type='text' dataIdx={idx} />
+                <input type='text' data-idx={idx} />
               </td>
             }) }
           </tr>
