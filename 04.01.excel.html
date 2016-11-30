@@ -130,18 +130,12 @@
                       var content = cell;
                       var edit = this.state.edit;
                       if (edit && edit.row === rowidx && edit.cell === idx) {
-                        content = React.DOM.form({onSubmit: this._save},
-                          React.DOM.input({
-                            type: 'text',
-                            defaultValue: cell,
-                          })
-                        );
+                        content = <form onSubmit={this._save}>
+                          <input type='text' defaultValue={cell} />
+                        </form>
                       }
-                      return React.DOM.td({
-                        key: idx,
-                        'data-row': rowidx,
-                      }, content);
-                    }, this) }
+                      return <td key={idx} dataRow={rowidx}>{content}</td>
+                    }, this)}
                   </tr>
                 );
               }, this) }
@@ -151,23 +145,11 @@
       },
 
       _renderToolbar: function() {
-        return React.DOM.div({ className: 'toolbar' },
-          React.DOM.button(
-          {
-            onClick: this._toggleSearch,
-          },
-          'Search'),
-        React.DOM.a(
-          {
-            onClick: this._download.bind(this, 'json'),
-            href: 'data.json'
-          }, 'Export JSON'),
-        React.DOM.a(
-          {
-            onClick: this._download.bind(this, 'csv'),
-            href: 'data.csv'
-          }, 'Export CSV') 
-        )
+        return <div className='toolbar'>
+          <button onClick={this._toggleSearch}>Search</button>
+          <a onClick={this._download.bind(this, 'json')} href='data.json'>Export JSON</a>
+          <a onClick={this._download.bind(this, 'csv')} href='data.csv'>Export CSV</a>
+        </div>
       },
 
       _renderSearch: function() {
@@ -175,16 +157,13 @@
           return null;
         }
         return (
-          React.DOM.tr({onChange: this._search }, 
-            this.props.headers.map( function( _ignore, idx) {
-              return React.DOM.td({key: idx},
-                React.DOM.input({
-                  type: 'text',
-                  'data-idx': idx
-                })
-              )
-            })
-          )
+         <tr onChange={this._search}> 
+            { this.props.headers.map( function( _ignore, idx) {
+              return <td key={idx}>
+                <input type='text' dataIdx={idx} />
+              </td>
+            }) }
+          </tr>
         )
       },
 
